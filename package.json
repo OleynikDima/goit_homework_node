@@ -1,0 +1,20 @@
+{
+  "name": "goit_homework_node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OleynikDima/goit_homework_node.git"
+  },
+  "keywords": [],
+  "author": "qwwqw",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OleynikDima/goit_homework_node/issues"
+  },
+  "homepage": "https://github.com/OleynikDima/goit_homework_node#readme"
+}
