@@ -13,3 +13,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the index.js <br />
+
+### 'npm run dev'
+
+Runs the start.js </br />
