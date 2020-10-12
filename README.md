@@ -1,9 +1,12 @@
 
-## 01-node-basics
+## 02-node-express
   <br>  chenge contacts.json <br />
     used:
-    - yrags,
+    - cors,
     - nodemon;
+    - morgan;
+    - JOI;
+    - express
 
 This project was Node.js
 ## Available Scripts
@@ -12,8 +15,10 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the index.js <br />
+Runs the api/start.js <br />
 
 ### 'npm run dev'
 
-Runs the start.js </br />
+Runs the nodeon api/start.js </br />
+
+
