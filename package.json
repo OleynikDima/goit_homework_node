@@ -1,11 +1,11 @@
 {
-  "name": "goit_homework_node",
+  "name": "server_node",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev":"nodemon index.js",
+    "start": "node api/start.js",
+    "dev": "nodemon api/start.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -13,10 +13,21 @@
     "url": "git+https://github.com/OleynikDima/goit_homework_node.git"
   },
   "keywords": [],
-  "author": "qwwqw",
+  "author": "Oleynik_Dima",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/OleynikDima/goit_homework_node/issues"
   },
-  "homepage": "https://github.com/OleynikDima/goit_homework_node#readme"
+  "homepage": "https://github.com/OleynikDima/goit_homework_node#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "joi": "^17.2.1",
+    "morgan": "^1.10.0",
+    "yargs": "^16.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
 }
