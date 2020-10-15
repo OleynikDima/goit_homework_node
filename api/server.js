@@ -1,12 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const logger = require('morgan');
-
-
 require('dotenv').config();
 
 const PORT = process.env.PORT;
-const usersRouter = require('./user/user.router')
+const usersRouter = require('./user/contacts.router')
 
 class UserService {
     constructor(){
@@ -40,7 +38,6 @@ class UserService {
                 const code = err.status ? err.status : 400;
                 res.status(code).send({message: err.message});
             };
-
         });
     }
 

@@ -1,18 +1,11 @@
-
 const Joi = require('joi');
-
 const users = require('../../db/contacts.json');
 const {listContacts, getContactById, addContact,removeContact,updateContact} = require('../../contacts');
-
-
-
-
-
 
 class UserController {
 
     async getUsers(req,res,next){
-        return  res.status(200).send(JSON.parse(await listContacts()));
+            return  res.status(200).send(await listContacts());
     };
 
     async createUser(req,res,next){
@@ -34,11 +27,10 @@ class UserController {
             return res.status(404).send({message:"Not found"})
         }
         res.status(200).send(result)
-        
     };
-    
+
      async removeUserId(req,res,next){
-         const id = Number(req.params.contactId)
+        const id = Number(req.params.contactId)
             const targetUsersId = UserController.findUserIndexById(res,id);
                 if(targetUsersId == undefined){
                     return;
@@ -46,8 +38,6 @@ class UserController {
             await removeContact(id);
             return  res.status(200).send({message: "contact deleted"}) 
     }
-
-
 
    async updateUser(req,res,next){
         try {
@@ -61,7 +51,6 @@ class UserController {
         } catch (err) {
             next(err)
         }
-    
     };
 
     validateUpdateUser(res, req, next){
@@ -70,7 +59,6 @@ class UserController {
                 email: Joi.string(),
                 phone: Joi.string()
             });
-
         UserController.checkValidationError(updateUserRules, req, res, next);
     };
 
@@ -81,9 +69,7 @@ class UserController {
             phone: Joi.string()
         })
         UserController.checkValidationError(updateSchemaValidator, req, res, next)
-
     };
-
 
     static checkValidationError(schema, req, res, next) {
         const { error } = schema.validate(req.body);
