@@ -1,72 +1,45 @@
-const fs = require('fs');
+const { promises: fsPromises } = require('fs');
 const path = require('path')
-
 const contactsPath  = path.join('./db/contacts.json');
 
-function listContacts() {
-  fs.readFile(contactsPath,'utf8',(err,data) => {
-    if(err){
-      console.log(err);
-    }else{
-      console.log(JSON.parse(data));
-    }
-  });
-
+async function listContacts() {
+  return JSON.parse( await fsPromises.readFile(contactsPath, "utf-8"))
 }
 
-function getContactById(contactId) {
-   fs.readFile(contactsPath, 'utf8', (err,data) =>{
-        if(err){
-          console.log(err);
-        }else{
-  //search Contact
-         const dataContacts = JSON.parse(data).find(item => item.id === contactId);
-         console.log(dataContacts);
-        }
-    });
+async function getContactById(contactId) {
+  return  JSON.parse(await fsPromises.readFile(contactsPath, "utf-8")).find(el => el.id === contactId);
 };
 
-
-function removeContact(contactId) {
-  fs.readFile(contactsPath, 'utf8', (err,data) =>{    
-    if(err){
-      console.log(err);
-    }else{
+async function removeContact(contactId) {
+    const data = await listContacts();    
   //delete Contact
-     const dataContacts = JSON.parse(data).filter(item => item.id !== contactId );
-     fs.writeFileSync(contactsPath, JSON.stringify(dataContacts));
-     listContacts();
-    }
-  });
+    const dataContacts = JSON.parse(data).filter(item => item.id !== contactId );
+    await fsPromises.writeFile(contactsPath, JSON.stringify(dataContacts)); 
+    return dataContacts;
+};
 
-}
-
-
-function addContact(name, email, phone) {
- fs.readFile(contactsPath, 'utf8', (err,data) =>{
-     if(err) throw err;
+async function addContact({name, email, phone}) {
+    const data = await  listContacts();
 //new id = search last id and + 1
-     const newId = JSON.parse(data).map((item) => item.id).slice(-1).pop()+1;
- 
-     const contactsContent = JSON.parse(data); 
-     
+    const newId = JSON.parse(data).map((item) => item.id).slice(-1).pop()+1;
+    const contactsContent = JSON.parse(data); 
 //new Obj Contact
-     const newContact = { id:newId, name, email, phone };
-    
-     contactsContent.push(newContact);
-     fs.writeFileSync(contactsPath,  JSON.stringify(contactsContent), err => {
-       if(err) throw err;
-    });
+    const newContact = { id:newId, name, email, phone };
+    contactsContent.push(newContact);
+    await fsPromises.writeFile(contactsPath, JSON.stringify(contactsContent));
+    return newContact;
+};
 
-    listContacts();
-});
-
-
+async function updateContact(updateDate){
+  //Update Contacts.js
+  await fsPromises.writeFile(contactsPath, JSON.stringify(updateDate))
+  return updateDate
 }
 
 module.exports={
   listContacts,
   getContactById,
   removeContact,
-  addContact
+  addContact,
+  updateContact
 };
