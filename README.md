@@ -1,7 +1,12 @@
-## 02-node-express
+## 03-mongodb
 
-<br> chenge contacts.json <br /> used: - cors, - nodemon; - morgan; - JOI; -
-express
+<br> used: <br />
+
+- nodemon;
+- morgan;
+- express;
+- mongoDb;
+- mongoose;
 
 This project was Node.js
 
