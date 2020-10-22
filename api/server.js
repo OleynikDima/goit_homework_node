@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
 const MONGODB_URL = process.env.MONGODB_URL || '';
-const usersRouter = require('./user/contacts.router');
+const usersRouter = require('./contacts/contacts.router');
 
 class UserService {
   constructor() {
