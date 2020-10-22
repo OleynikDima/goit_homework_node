@@ -27,7 +27,7 @@ Runs the nodemon index.js <br />
 
 ### 1
 
-#### POST /auth/register
+### POST /auth/register
 
 Content-Type: application/json RequestBody: { "email": "example@example.com",
 "password": "examplepassword" }
@@ -37,7 +37,7 @@ Status: 201 Created Content-Type: application/json ResponseBody: { "user": {
 
 ### 2
 
-#### POST /auth/login
+### POST /auth/login
 
 Content-Type: application/json RequestBody: { "email": "example@example.com",
 "password": "examplepassword" }
@@ -48,7 +48,7 @@ Status: 200 OK Content-Type: application/json ResponseBody: { "token":
 
 ### 3
 
-#### POST /auth/logout
+### POST /auth/logout
 
 Authorization: "Bearer token"
 
@@ -56,7 +56,7 @@ Status: 204 No Content
 
 ### 4
 
-#### GET /users/current
+### GET /users/current
 
 Authorization: "Bearer token"
 
