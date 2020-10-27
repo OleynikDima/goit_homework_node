@@ -4,9 +4,9 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 const MONGODB_URL = process.env.MONGODB_URL || '';
-const usersRouter = require('./contacts/contacts.router');
+const authRouter = require('./auth/auth.router');
 
 class UserService {
   constructor() {
@@ -31,12 +31,14 @@ class UserService {
     this.server.use(logger('dev'));
   }
   initRouter() {
-    this.server.use('/api', usersRouter);
+    this.server.use('/api', usersRouter)
+    this.server.use('/auth', authRouter);
   }
   async initDataBase() {
     const options = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     };
 
     try {
