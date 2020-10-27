@@ -31,7 +31,7 @@ class UserService {
     this.server.use(logger('dev'));
   }
   initRouter() {
-    // this.server.use('/api', usersRouter)
+    this.server.use('/api', usersRouter)
     this.server.use('/auth', authRouter);
   }
   async initDataBase() {
