@@ -11,6 +11,7 @@ const {
   logOut,
   createAvatarURL,
   minifyImage,
+  updateUser
 } = require('./auth.controller');
 
 authRouter.post(
@@ -24,5 +25,7 @@ authRouter.post(
 authRouter.post('/login', validateUser, loginIn);
 authRouter.post('/logout', authorize, logOut);
 authRouter.get('/users/current', authorize, getUser);
+
+authRouter.patch('/user/avatar',authorize,upload.single('avatar'),minifyImage,updateUser)
 
 module.exports = authRouter;

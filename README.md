@@ -1,4 +1,6 @@
-## 04-auth
+## 05-images
+
+npm i generate-avatar multer imagemin
 
 <br> used: <br />
 
@@ -8,6 +10,8 @@
 - mongoose;
 - jsonwebtoken;
 - bcrypt;
+- multer;
+- imagemin;
 
 This project was Node.js
 
@@ -30,35 +34,16 @@ Runs the nodemon index.js <br />
 ### POST /auth/register
 
 Content-Type: application/json RequestBody: { "email": "example@example.com",
-"password": "examplepassword" }
+"password": "examplepassword" } , <br /> Content-Type: multipart/form-data
+RequestBody: загруженный файл
 
 Status: 201 Created Content-Type: application/json ResponseBody: { "user": {
-"email": "example@example.com", "subscription": "free" } }
+"email": "example@example.com", "subscription": "free" ,
+"avatarUrl":"http://locahost:3000/images/<имя файла с расширением>"} }
 
 ### 2
 
-### POST /auth/login
+### PATCH /users/avatars
 
-Content-Type: application/json RequestBody: { "email": "example@example.com",
-"password": "examplepassword" }
-
-Status: 200 OK Content-Type: application/json ResponseBody: { "token":
-"exampletoken", "user": { "email": "example@example.com", "subscription": "free"
-} }
-
-### 3
-
-### POST /auth/logout
-
-Authorization: "Bearer token"
-
-Status: 204 No Content
-
-### 4
-
-### GET /users/current
-
-Authorization: "Bearer token"
-
-Status: 200 OK Content-Type: application/json ResponseBody: { "email":
-"example@example.com", "subscription": "free" }
+Content-Type: multipart/form-data Authorization: "Bearer token" RequestBody:
+загруженный файл

@@ -14,6 +14,7 @@ require('dotenv').config();
 
 class AuthController {
   async getUser(req, res, next) {
+    
     try {
       const user = req.user;
 
@@ -21,10 +22,27 @@ class AuthController {
         user: {
           email: user.email,
           subscription: user.subscription,
+          avatarURL:user.avatarURL
         },
       });
     } catch (error) {
       next(error);
+    }
+  };
+
+  async updateUser(req, res, next) {
+    try {
+      const newAvatarUrl = 'http://localhost:3000/images/' + req.file.filename
+      const id = req.user.id;
+      req.user.avatarURL = newAvatarUrl;
+      const updateContact = await authModel.findByIdAndUpdate(id, req.user);
+
+      if (!updateContact) {
+        res.status(400).send({ message: 'Not found' });
+      }
+      res.status(200).send({ message: 'contact updated' , avatarURL: newAvatarUrl});
+    } catch (err) {
+      next(err);
     }
   }
 
@@ -44,7 +62,7 @@ class AuthController {
         password: hashPassword,
       });
 
-      console.log();
+      
       return res.status(201).send({
         user: {
           email: user.email,
@@ -72,7 +90,7 @@ class AuthController {
       if (!isPasswordValid) {
         return res.status(404).send({ message: 'Authorization faild' });
       }
-
+      
       const token = await jwt.sign(
         {
           id: user[0].id,
@@ -83,7 +101,7 @@ class AuthController {
           expiresIn: '1h',
         },
       );
-
+        console.log(token);
       const updateUser = await authModel.findByIdAndUpdate(
         user[0].id,
         { token },
@@ -126,7 +144,7 @@ class AuthController {
     if (error) {
       return res.status(422).send({ message: error.details[0].message });
     }
-
+    
     next();
   }
 
@@ -143,6 +161,7 @@ class AuthController {
   }
 
   async authorize(req, res, next) {
+    
     try {
       const authHeader = req.get('Authorization');
 
@@ -176,7 +195,8 @@ class AuthController {
     } catch (error) {
       next(error);
     }
-  }
+  };
+
 
   async createAvatarURL(req, res, next) {
     if (req.file) {
@@ -201,7 +221,6 @@ class AuthController {
   }
 
   async minifyImage(req, res, next) {
-    console.log('Mini');
     try {
       console.log('Start processing file...');
       const MINIFIED_DIR = 'public/images';
