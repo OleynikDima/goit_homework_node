@@ -1,6 +1,4 @@
-## 05-images
-
-npm i generate-avatar multer imagemin
+## 06-email
 
 <br> used: <br />
 
@@ -40,10 +38,3 @@ RequestBody: загруженный файл
 Status: 201 Created Content-Type: application/json ResponseBody: { "user": {
 "email": "example@example.com", "subscription": "free" ,
 "avatarUrl":"http://locahost:3000/images/<имя файла с расширением>"} }
-
-### 2
-
-### PATCH /users/avatars
-
-Content-Type: multipart/form-data Authorization: "Bearer token" RequestBody:
-загруженный файл
