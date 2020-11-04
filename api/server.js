@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('cors');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -7,6 +6,7 @@ require('dotenv').config();
 const PORT = process.env.PORT;
 const MONGODB_URL = process.env.MONGODB_URL || '';
 const authRouter = require('./auth/auth.router');
+const usersRouter = require('./contacts/contacts.router');
 
 class UserService {
   constructor() {
@@ -28,10 +28,11 @@ class UserService {
 
   initMiddleware() {
     this.server.use(express.json());
+    this.server.use('/images', express.static('public/images'));
     this.server.use(logger('dev'));
   }
   initRouter() {
-    this.server.use('/api', usersRouter)
+    this.server.use('/api', usersRouter);
     this.server.use('/auth', authRouter);
   }
   async initDataBase() {

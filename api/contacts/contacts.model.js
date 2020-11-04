@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+const contacSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
@@ -13,7 +13,7 @@ const userSchema = new Schema({
   token: { type: String, required: true },
 });
 
-userSchema.static.findUserByIdUpdate = findUserByIdUpdate;
+contacSchema.static.findUserByIdUpdate = findUserByIdUpdate;
 
 async function findUserByIdUpdate(userId, updateParams) {
   return this.findByIdAndUpdate(
@@ -27,6 +27,6 @@ async function findUserByIdUpdate(userId, updateParams) {
   );
 }
 
-const userModel = mongoose.model('User', userSchema);
+const userModel = mongoose.model('Contact', contacSchema);
 
 module.exports = userModel;
