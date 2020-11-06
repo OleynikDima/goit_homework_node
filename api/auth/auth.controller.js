@@ -59,8 +59,6 @@ class AuthController {
         return res.status(409).send({ message: 'Email in use' });
       }
 
-      // if(){}
-
       const hashPassword = await bcrypt.hash(password, 5);
 
       const user = await authModel.create({
@@ -69,7 +67,6 @@ class AuthController {
         password: hashPassword,
       });
 
-      console.log(user);
       await AuthController.sendMailUser(user);
 
       return res.status(201).send({
@@ -264,8 +261,6 @@ class AuthController {
 
     const verificationUrl = `http://localhost:3000/auth/verify/${newTokenUser}`;
     try {
-      console.log(user.email);
-      console.log(process.env.SENDMAILER_USER);
       const msg = {
         to: user.email,
         from: process.env.SENDMAILER_USER,
@@ -284,7 +279,6 @@ class AuthController {
   async verificationUrlToken(req, res, next) {
     try {
       const verificationToken = req.params.verificationToken;
-      console.log(verificationToken);
       const userToVerifyted = await authModel.findOne({ verificationToken });
 
       if (!userToVerifyted) {
