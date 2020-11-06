@@ -12,9 +12,12 @@ const { generateFromString } = require('generate-avatar');
 
 require('dotenv').config();
 
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const { v4: uuidv4 } = require('uuid');
+
 class AuthController {
   async getUser(req, res, next) {
-    
     try {
       const user = req.user;
 
@@ -22,17 +25,17 @@ class AuthController {
         user: {
           email: user.email,
           subscription: user.subscription,
-          avatarURL:user.avatarURL
+          avatarURL: user.avatarURL,
         },
       });
     } catch (error) {
       next(error);
     }
-  };
+  }
 
   async updateUser(req, res, next) {
     try {
-      const newAvatarUrl = 'http://localhost:3000/images/' + req.file.filename
+      const newAvatarUrl = 'http://localhost:3000/images/' + req.file.filename;
       const id = req.user.id;
       req.user.avatarURL = newAvatarUrl;
       const updateContact = await authModel.findByIdAndUpdate(id, req.user);
@@ -40,7 +43,9 @@ class AuthController {
       if (!updateContact) {
         res.status(400).send({ message: 'Not found' });
       }
-      res.status(200).send({ message: 'contact updated' , avatarURL: newAvatarUrl});
+      res
+        .status(200)
+        .send({ message: 'contact updated', avatarURL: newAvatarUrl });
     } catch (err) {
       next(err);
     }
@@ -54,6 +59,8 @@ class AuthController {
         return res.status(409).send({ message: 'Email in use' });
       }
 
+      // if(){}
+
       const hashPassword = await bcrypt.hash(password, 5);
 
       const user = await authModel.create({
@@ -62,7 +69,9 @@ class AuthController {
         password: hashPassword,
       });
 
-      
+      console.log(user);
+      await AuthController.sendMailUser(user);
+
       return res.status(201).send({
         user: {
           email: user.email,
@@ -90,7 +99,7 @@ class AuthController {
       if (!isPasswordValid) {
         return res.status(404).send({ message: 'Authorization faild' });
       }
-      
+
       const token = await jwt.sign(
         {
           id: user[0].id,
@@ -101,7 +110,7 @@ class AuthController {
           expiresIn: '1h',
         },
       );
-        console.log(token);
+      console.log(token);
       const updateUser = await authModel.findByIdAndUpdate(
         user[0].id,
         { token },
@@ -144,7 +153,7 @@ class AuthController {
     if (error) {
       return res.status(422).send({ message: error.details[0].message });
     }
-    
+
     next();
   }
 
@@ -161,7 +170,6 @@ class AuthController {
   }
 
   async authorize(req, res, next) {
-    
     try {
       const authHeader = req.get('Authorization');
 
@@ -195,8 +203,7 @@ class AuthController {
     } catch (error) {
       next(error);
     }
-  };
-
+  }
 
   async createAvatarURL(req, res, next) {
     if (req.file) {
@@ -220,6 +227,7 @@ class AuthController {
     }
   }
 
+  // меняем размер картинки
   async minifyImage(req, res, next) {
     try {
       console.log('Start processing file...');
@@ -248,6 +256,69 @@ class AuthController {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  // рассылка  почти
+  static async sendMailUser(user) {
+    const newTokenUser = await AuthController.saveVerifcationToken(user._id);
+
+    const verificationUrl = `http://localhost:3000/auth/verify/${newTokenUser}`;
+    try {
+      console.log(user.email);
+      console.log(process.env.SENDMAILER_USER);
+      const msg = {
+        to: user.email,
+        from: process.env.SENDMAILER_USER,
+        subject: 'Sending with SendGrid is Fun',
+        text: 'and easy to do anywhere, even with Node.js',
+        html: `<a href=${verificationUrl}> ${verificationUrl}</a>`,
+      };
+
+      return sgMail.send(msg);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // email verufycation
+  async verificationUrlToken(req, res, next) {
+    try {
+      const verificationToken = req.params.verificationToken;
+      console.log(verificationToken);
+      const userToVerifyted = await authModel.findOne({ verificationToken });
+
+      if (!userToVerifyted) {
+        res.status(404).send({ message: 'Not Found ' });
+      }
+
+      await AuthController.verifyUser(userToVerifyted._id);
+
+      res.status(200).send({ message: 'User Verufication Ok' });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async saveVerifcationToken(userId) {
+    const token = uuidv4();
+    const { verificationToken } = await authModel.findByIdAndUpdate(
+      userId,
+      {
+        verificationToken: token,
+      },
+      { new: true },
+    );
+
+    return verificationToken;
+  }
+
+  static async verifyUser(userId) {
+    await authModel.findByIdAndUpdate(userId, {
+      status: 'verified',
+      verificationToken: null,
+    });
+
+    return 'success';
   }
 }
 

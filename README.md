@@ -2,14 +2,8 @@
 
 <br> used: <br />
 
-- nodemon;
-- express;
-- mongoDb;
-- mongoose;
-- jsonwebtoken;
-- bcrypt;
-- multer;
-- imagemin;
+- uuidv4;
+- SendGrid;
 
 This project was Node.js
 
@@ -35,6 +29,9 @@ Content-Type: application/json RequestBody: { "email": "example@example.com",
 "password": "examplepassword" } , <br /> Content-Type: multipart/form-data
 RequestBody: загруженный файл
 
-Status: 201 Created Content-Type: application/json ResponseBody: { "user": {
-"email": "example@example.com", "subscription": "free" ,
-"avatarUrl":"http://locahost:3000/images/<имя файла с расширением>"} }
+### 2
+
+### GET /auth/verify/:verificationToken
+
+Status: 201 Created Content-Type: application/json ResponseBody: { "user": "User
+Verify Ok:};

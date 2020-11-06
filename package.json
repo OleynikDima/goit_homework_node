@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/OleynikDima/goit_homework_node#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.4.0",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -35,6 +36,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "random-avatar-generator": "^2.0.0",
+    "uuidv4": "^6.2.5",
     "yargs": "^16.0.3"
   },
   "devDependencies": {
