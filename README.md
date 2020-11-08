@@ -1,17 +1,9 @@
-## 05-images
-
-npm i generate-avatar multer imagemin
+## 06-email
 
 <br> used: <br />
 
-- nodemon;
-- express;
-- mongoDb;
-- mongoose;
-- jsonwebtoken;
-- bcrypt;
-- multer;
-- imagemin;
+- uuidv4;
+- SendGrid;
 
 This project was Node.js
 
@@ -37,13 +29,9 @@ Content-Type: application/json RequestBody: { "email": "example@example.com",
 "password": "examplepassword" } , <br /> Content-Type: multipart/form-data
 RequestBody: загруженный файл
 
-Status: 201 Created Content-Type: application/json ResponseBody: { "user": {
-"email": "example@example.com", "subscription": "free" ,
-"avatarUrl":"http://locahost:3000/images/<имя файла с расширением>"} }
-
 ### 2
 
-### PATCH /users/avatars
+### GET /auth/verify/:verificationToken
 
-Content-Type: multipart/form-data Authorization: "Bearer token" RequestBody:
-загруженный файл
+Status: 201 Created Content-Type: application/json ResponseBody: { "user": "User
+Verify Ok:};
